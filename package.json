@@ -1,0 +1,24 @@
+{
+  "name": "agentic-qa",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/IrinaRGit/Agentic-QA.git"
+  },
+  "keywords": [],
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/IrinaRGit/Agentic-QA/issues"
+  },
+  "homepage": "https://github.com/IrinaRGit/Agentic-QA#readme",
+  "dependencies": {
+    "@faker-js/faker": "^10.6.0",
+    "@playwright/test": "^1.63.0",
+    "dotenv": "^18.0.4"
+  }
+}
