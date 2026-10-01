@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "playwright test"
+    "test": "playwright test",
+    "test:setup": "playwright test --project=setup",
+    "playwright:install": "playwright install"
   },
   "repository": {
     "type": "git",
