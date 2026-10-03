@@ -1,6 +1,7 @@
 import { Locator, Page } from '@playwright/test';
 import { AppRoute } from '../test-data/routes';
 import { AddChildFormComponent } from './components/add-child-form.component';
+import { DashboardKidsSectionComponent } from './components/dashboard-kids-section.component';
 import { CircleInvitePanelComponent } from './components/circle-invite-panel.component';
 import { CoParentInvitePanelComponent } from './components/co-parent-invite-panel.component';
 import { HeaderComponent } from './components/header.component';
@@ -15,6 +16,7 @@ export class DashboardPage {
   readonly enablePushRemindersButton: Locator;
   readonly installAppButton: Locator;
   readonly addChildForm: AddChildFormComponent;
+  readonly kidsSection: DashboardKidsSectionComponent;
 
   constructor(private readonly page: Page) {
     this.header = new HeaderComponent(page);
@@ -29,6 +31,7 @@ export class DashboardPage {
     this.installAppButton = page.getByRole('button', { name: 'Install app', exact: true });
     const addChildRoot = page.getByRole('button', { name: 'Add child', exact: true }).locator('..');
     this.addChildForm = new AddChildFormComponent(page, addChildRoot);
+    this.kidsSection = new DashboardKidsSectionComponent(page);
   }
 
   /** Open the dashboard. */

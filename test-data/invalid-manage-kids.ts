@@ -17,6 +17,17 @@ export const invalidManageKidsAddChildInputs = [
       interests: '',
     } satisfies EmptyAddChildFormFields,
   },
+  {
+    // Confluence partial fill: first name + + LEGO, no birth year — child must not be created.
+    fields: {
+      firstName: 'PartialProbe',
+      birthYear: '',
+      month: '',
+      interests: '',
+    },
+    clickLegoChip: true,
+    expectedInterestsAfterChip: 'LEGO',
+  },
 ] as const;
 
 // Open question (AQPBT-5 / Confluence): AC5 says "required fields empty" but only Birth year focus was observed — Month has no [required] in the live form; whether Month or Gender must be set for a successful add is not specified in AC.
