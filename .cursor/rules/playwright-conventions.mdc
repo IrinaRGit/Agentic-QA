@@ -6,6 +6,8 @@ alwaysApply: false
 
 Playwright tests in this repo follow user-facing locators, web-first waiting, composed POMs, setup-project auth, self-cleaning data, and hook-enforced refusals — details below.
 
+**First step:** Read [`.cursor/skills/pom-conventions/SKILL.md`](../skills/pom-conventions/SKILL.md) before writing or changing anything under `tests/` or `pages/`.
+
 **1. Locators** — Prefer roles and accessible names; reserve test ids for last resort; CSS/XPath needs review.  
 **2. Waiting** — Assert on locators with auto-retry; never sleep or snapshot visibility booleans.  
 **3. Page Object Model** — One class per page/component; constructor holds locators; methods act; specs assert.  

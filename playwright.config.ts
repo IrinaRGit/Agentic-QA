@@ -29,8 +29,13 @@ export default defineConfig({
       fullyParallel: false,
     },
     {
+      name: 'guest',
+      testMatch: '**/login.spec.ts',
+    },
+    {
       name: 'app',
       testMatch: '**/*.spec.ts',
+      testIgnore: '**/login.spec.ts',
       use: {
         storageState: AUTH_FILE,
       },

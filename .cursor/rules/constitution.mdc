@@ -14,6 +14,7 @@ Non-negotiables for every task. Details and examples: playwright-conventions.mdc
 | storageState auth | Log in once per family in the setup project; credentials from `process.env` |
 | Unique, self-cleaning data | `Date.now()` or a factory per test; API teardown |
 | One tag per test | Exactly one of `@smoke` `@sanity` `@regression` `@api` `@e2e` `@destructive` on each `test()`; never on `describe()` |
+| pom-conventions skill | Before generating, refactoring, or reviewing anything under `tests/` or `pages/`, read [pom-conventions](../skills/pom-conventions/SKILL.md) first — even when the user does not say "POM"; specs never use inline locators |
 
 ## SHOULD
 
@@ -39,7 +40,17 @@ Non-negotiables for every task. Details and examples: playwright-conventions.mdc
 
 ## Index
 
-**Skills** (`.agents/skills/`): *(updated as each artifact is added)*
+**Skills** (`.cursor/skills/`):
+- [api-cleanup](../skills/api-cleanup/SKILL.md) — track and tear down test data
+- [ci-failure-triage](../skills/ci-failure-triage/SKILL.md) — red CI → structured diagnosis
+- [eval-report](../skills/eval-report/SKILL.md) — refresh suite reliability metrics
+- [exploratory-charter](../skills/exploratory-charter/SKILL.md) — session charter + findings template
+- [explore-and-generate](../skills/explore-and-generate/SKILL.md) — ticket-less coverage gaps → Gherkin
+- [jira-bug-reporter](../skills/jira-bug-reporter/SKILL.md) — Playwright failure → Jira bug
+- [jira-ticket-analyzer](../skills/jira-ticket-analyzer/SKILL.md) — Jira AC → Gherkin
+- [pom-conventions](../skills/pom-conventions/SKILL.md) — POM layout and page inventory
+- [self-heal](../skills/self-heal/SKILL.md) — drift locator patch → PR (after triage)
+- [test-data-reset](../skills/test-data-reset/SKILL.md) — manual tracker cleanup via API
 
 **Agents** (`.cursor/agents/`): *(updated as each artifact is added)*
 
