@@ -3,7 +3,7 @@ description: Always-on Playwright constitution — non-negotiables, preferences,
 alwaysApply: true
 ---
 
-Non-negotiables for every task. Details and examples: playwright-conventions.mdc (tests) and qa-orchestrator.mdc (ticket/CI workflow) — both added later.
+Non-negotiables for every task. Details and examples: [playwright-conventions](playwright-conventions.mdc) (tests) and [qa-orchestrator](qa-orchestrator.mdc) (ticket/CI workflow).
 
 ## MUST
 
@@ -41,18 +41,21 @@ Non-negotiables for every task. Details and examples: playwright-conventions.mdc
 ## Index
 
 **Skills** (`.cursor/skills/`):
-- [api-cleanup](../skills/api-cleanup/SKILL.md) — track and tear down test data
-- [ci-failure-triage](../skills/ci-failure-triage/SKILL.md) — red CI → structured diagnosis
-- [eval-report](../skills/eval-report/SKILL.md) — refresh suite reliability metrics
-- [exploratory-charter](../skills/exploratory-charter/SKILL.md) — session charter + findings template
-- [explore-and-generate](../skills/explore-and-generate/SKILL.md) — ticket-less coverage gaps → Gherkin
-- [jira-bug-reporter](../skills/jira-bug-reporter/SKILL.md) — Playwright failure → Jira bug
-- [jira-ticket-analyzer](../skills/jira-ticket-analyzer/SKILL.md) — Jira AC → Gherkin
-- [pom-conventions](../skills/pom-conventions/SKILL.md) — POM layout and page inventory
-- [self-heal](../skills/self-heal/SKILL.md) — drift locator patch → PR (after triage)
-- [test-data-reset](../skills/test-data-reset/SKILL.md) — manual tracker cleanup via API
+- [api-cleanup](../skills/api-cleanup/SKILL.md) — API test teardown
+- [ci-failure-triage](../skills/ci-failure-triage/SKILL.md) — red CI diagnosis
+- [eval-report](../skills/eval-report/SKILL.md) — suite reliability metrics
+- [exploratory-charter](../skills/exploratory-charter/SKILL.md) — exploratory session charter
+- [explore-and-generate](../skills/explore-and-generate/SKILL.md) — ticket-less Gherkin plans
+- [jira-bug-reporter](../skills/jira-bug-reporter/SKILL.md) — failure to Jira
+- [jira-ticket-analyzer](../skills/jira-ticket-analyzer/SKILL.md) — AC to Gherkin
+- [pom-conventions](../skills/pom-conventions/SKILL.md) — POM layout conventions
+- [self-heal](../skills/self-heal/SKILL.md) — drift locator heal
+- [test-data-reset](../skills/test-data-reset/SKILL.md) — manual data reset
 
-**Agents** (`.cursor/agents/`): *(updated as each artifact is added)*
+**Agents** (`.cursor/agents/`):
+- [test-writer](../agents/test-writer.md) — plan to spec
+- [triage](../agents/triage.md) — classify CI failure
+- [bug-reporter](../agents/bug-reporter.md) — file Jira bug
 
 ## Agent governance
 
