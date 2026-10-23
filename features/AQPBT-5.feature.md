@@ -53,11 +53,11 @@ Feature: Dashboard manage kids — Change avatar, remove, add-child form
 ## Negative
 
 ```gherkin
-  Scenario: Add child with empty required fields focuses Birth year and does not add a row
+  Scenario: Add child with empty required fields focuses Child's first name and does not add a row
     Given the add-child form has empty required fields
     And I note the current "My Kids" count
     When I activate "Add child"
-    Then focus is on "Birth year"
+    Then focus is on "Child's first name"
     And no new child row appears
     And the "My Kids" stat is unchanged
 
@@ -95,7 +95,7 @@ Feature: Dashboard manage kids — Change avatar, remove, add-child form
 <!--
 Ambiguities / gaps:
 - Successful Add child with a new row is out of scope in AQPBT-5; remove/edge scenarios create a unique child in-test then delete via UI.
-- AC5 "required fields empty" — only Birth year focus was observed; Month is not marked required in the live form.
+- AC5 "required fields empty" — HTML5 validation focuses **Child's first name** first (re-probed CI/local **2026-10-23**); Month is not marked required in the live form.
 - No visible validation message on failed add-child submit (focus shift only).
 - Birth year + Month → displayed age rule not specified (e.g. Mia, 7 · Girl).
 - Remove has no undo/confirm in the accessibility tree.

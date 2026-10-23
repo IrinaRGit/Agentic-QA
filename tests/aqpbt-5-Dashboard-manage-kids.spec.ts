@@ -120,7 +120,7 @@ test('remove child drops the row and decreases My Kids by one @e2e', async ({ pa
   await expect(await dashboard.kidsSection.myKidsCount()).toBe(beforeCount);
 });
 
-test('add child with empty required fields focuses Birth year and does not add a row @e2e', async ({
+test('add child with empty required fields focuses Child\'s first name and does not add a row @e2e', async ({
   page,
 }) => {
   const dashboard = new DashboardPage(page);
@@ -129,7 +129,7 @@ test('add child with empty required fields focuses Birth year and does not add a
   const beforeCount = await dashboard.kidsSection.myKidsCount();
   await dashboard.addChildForm.submit();
 
-  await expect(dashboard.addChildForm.birthYearInput).toBeFocused();
+  await expect(dashboard.addChildForm.firstNameInput).toBeFocused();
   await expect(await dashboard.kidsSection.myKidsCount()).toBe(beforeCount);
   expect(emptyAddChildCase.fields.firstName).toBe('');
 });
