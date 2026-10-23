@@ -16,6 +16,7 @@ export default defineConfig({
   reporter: [['./support/cleanup-reporter.ts'], ['html', { open: 'never' }]],
   use: {
     baseURL: appOrigin(),
+    channel: 'msedge',
     headless: true,
     screenshot: 'only-on-failure',
     trace: 'on-first-retry',
@@ -39,6 +40,12 @@ export default defineConfig({
       use: {
         storageState: AUTH_FILE,
       },
+      dependencies: ['setup'],
+    },
+    {
+      name: 'api',
+      testDir: './api',
+      testMatch: '**/*.api.spec.ts',
       dependencies: ['setup'],
     },
   ],

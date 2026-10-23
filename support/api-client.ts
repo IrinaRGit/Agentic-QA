@@ -11,7 +11,7 @@ function storageStatePathForOwner(owner: RecordOwner): string {
 }
 
 /** Playwright API context scoped to one family (main or alt storage state). */
-export async function createFamilyApiContext(
+export async function createApiContextForOwner(
   request: APIRequest,
   owner: RecordOwner,
 ): Promise<APIRequestContext> {
@@ -31,6 +31,14 @@ export async function createFamilyApiContext(
     storageState,
     extraHTTPHeaders,
   });
+}
+
+/** @deprecated Prefer {@link createApiContextForOwner}. */
+export const createFamilyApiContext = createApiContextForOwner;
+
+/** API context with no storage state or Authorization header. */
+export async function createUnauthenticatedApiContext(request: APIRequest): Promise<APIRequestContext> {
+  return request.newContext({ baseURL: appOrigin() });
 }
 
 /** DELETE /api/v1/children/:id (204 = success). */
