@@ -6,6 +6,8 @@ import { HeaderComponent } from './components/header.component';
 /** My Profile — account, family, and settings. */
 export class ProfilePage {
   readonly header: HeaderComponent;
+  readonly familyDetailsHeading: Locator;
+  readonly familyDetailsSavingStatus: Locator;
   readonly displayNameInput: Locator;
   readonly phoneInput: Locator;
   readonly saveMyDetailsButton: Locator;
@@ -21,6 +23,11 @@ export class ProfilePage {
 
   constructor(private readonly page: Page) {
     this.header = new HeaderComponent(page);
+    this.familyDetailsHeading = page.getByText('Family details', { exact: true });
+    const familyDetailsRoot = page.locator('div').filter({
+      has: page.getByRole('textbox', { name: 'Family name' }),
+    });
+    this.familyDetailsSavingStatus = familyDetailsRoot.getByText('Saving...', { exact: true });
     this.displayNameInput = page.getByRole('textbox', {
       name: 'Display name (how your circle sees you)',
     });
@@ -46,6 +53,36 @@ export class ProfilePage {
   /** Open the profile page. */
   async goto(): Promise<void> {
     await this.page.goto(AppRoute.Profile);
+  }
+
+  /** Currently selected address-visibility option on the native `<select>`. */
+  selectedAddressVisibilityOption(): Locator {
+    return this.addressVisibilityCombobox.locator('option:checked');
+  }
+
+  /** Option in the open address-visibility list. */
+  addressVisibilityOption(label: string): Locator {
+    return this.page.getByRole('option', { name: label, exact: true });
+  }
+
+  /** Open the address visibility dropdown in Family details. */
+  async openAddressVisibilityCombobox(): Promise<void> {
+    await this.addressVisibilityCombobox.click();
+  }
+
+  /** Replace the family name field value. */
+  async setFamilyName(name: string): Promise<void> {
+    await this.familyNameInput.fill(name);
+  }
+
+  /** Clear the family name field. */
+  async clearFamilyName(): Promise<void> {
+    await this.familyNameInput.fill('');
+  }
+
+  /** Activate Save family details. */
+  async saveFamilyDetails(): Promise<void> {
+    await this.saveFamilyDetailsButton.click();
   }
 
   /** Open the delete-account confirmation form. */
