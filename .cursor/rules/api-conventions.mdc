@@ -1,0 +1,130 @@
+---
+description: Conventions for API tests in api/ — sources of truth, safe auth, a success and an intentional error test per endpoint, evidence labels.
+globs: api/**
+alwaysApply: false
+---
+
+# API test conventions
+
+## 1. Sources of truth
+
+Specification or approved docs are **documented**; a row in **`api/CATALOG.md`** with evidence **executed** is **observed**. Anything else is an **assumption** → catalog **Not yet tested**, not an assertion. Observed rows → **characterization** tests (pin today’s behavior). Spec-backed rows → **contract** tests.
+
+✅ **Good** (`api/me.api.spec.ts` — fields match executed GET `/me` row):
+
+```typescript
+expectTopLevelType(body, 'parent', 'object');
+expectTopLevelType(body, 'family', 'object');
+expectTopLevelType(body, 'isAdmin', 'boolean');
+```
+
+❌ **Bad** (PATCH `/families` is **inspected only** in `api/CATALOG.md`; no status/body observed):
+
+```typescript
+test('PATCH /api/v1/families saves @api', async ({ mainApiContext }) => {
+  const response = await mainApiContext.patch('/api/v1/families', { data: { name: 'x' } });
+  expect(response.status()).toBe(200);
+});
+```
+
+## 2. Requests
+
+Paths from **`support/api.constants.ts`**; origin from Playwright **`baseURL`** (`appOrigin()`). Auth only via **`api/fixtures.ts`** → **`createApiContextForOwner`** / **`createUnauthenticatedApiContext`** in **`support/api-client.ts`**. No token, full URL, or id literal in specs.
+
+✅ **Good** (`api/communities.api.spec.ts` + `api/fixtures.ts`):
+
+```typescript
+const response = await mainApiContext.get(communityByIdPath(communityId));
+// fixture: createApiContextForOwner(playwright.request, 'main')
+```
+
+❌ **Bad**:
+
+```typescript
+await request.get('https://test.buddytime.ca/api/v1/communities/15f52f3a-ba2f-46b7-b859-047ed8f6b50f', {
+  headers: { Authorization: `Bearer ${process.env.BT_TOKEN}` },
+});
+```
+
+## 3. Two tests per endpoint
+
+Per endpoint: one **success** test (catalog status, `CATALOG_JSON_CONTENT_TYPE`, top-level types) and one **intentional error** test that changes **one** thing (drop token, omit required field, empty body). Assert status and fields you **observed**; do not assert bodies leak secrets (passwords, raw tokens).
+
+✅ **Good** (`api/me.api.spec.ts` — success + missing token → `CATALOG_UNAUTHENTICATED_GET_STATUS`):
+
+```typescript
+expect(response.status()).toBe(200);
+expectCatalogJsonContentType(response.headers()['content-type']);
+// ...
+const unauth = await unauthenticatedApiContext.get(API_ME_PATH);
+expect(unauth.status()).toBe(CATALOG_UNAUTHENTICATED_GET_STATUS);
+```
+
+❌ **Bad** (success only; no intentional error path):
+
+```typescript
+test('GET /api/v1/me @api', async ({ mainApiContext }) => {
+  const response = await mainApiContext.get(API_ME_PATH);
+  expect(response.status()).toBe(200);
+});
+```
+
+Prefer **two** `test()` blocks per endpoint when adding new coverage; existing combined tests should be split when touched.
+
+## 4. Writes
+
+Write only when undo is **executed** in the catalog (e.g. POST `/children` + DELETE `/children/{id}`). Call **`trackRecord`** immediately after create so global teardown deletes on failure.
+
+✅ **Good** (`api/children.api.spec.ts`):
+
+```typescript
+const createResponse = await mainApiContext.post(API_CHILDREN_PATH, { data: payload });
+expect(createResponse.status()).toBe(201);
+trackRecord({ type: 'child', id: childId, owner: 'main' });
+const deleteResult = await deleteChild(mainApiContext, childId);
+expect(deleteResult.status).toBe(204);
+```
+
+❌ **Bad** (create without track or catalog-backed undo):
+
+```typescript
+await mainApiContext.post(API_CHILDREN_PATH, { data: buildApiChildCreatePayload() });
+```
+
+## 5. Tags
+
+Exactly **one** tag per **`test()`**: **`@api`**. Never on `describe()`.
+
+✅ **Good** (`api/connections.api.spec.ts`):
+
+```typescript
+test('GET /api/v1/connections matches catalog contract @api', async ({ ... }) => { ... });
+```
+
+❌ **Bad**:
+
+```typescript
+test.describe('connections @api', () => {
+  test('lists connections', async () => { ... });
+});
+```
+
+## 6. Evidence
+
+Label claims **executed**, **inspected only**, or **not yet tested** in **`api/CATALOG.md`**. Status/body from spec text, chat, or agent guess is **not** evidence until probed and recorded.
+
+✅ **Good** (catalog table + constants wired to probes):
+
+```markdown
+| GET | `/api/v1/me` | … | 200 | … | yes | executed |
+```
+
+```typescript
+export const CATALOG_UNAUTHENTICATED_GET_STATUS = 401;
+```
+
+❌ **Bad** (assert 403 on unauth without a catalog row or probe):
+
+```typescript
+expect(unauth.status()).toBe(403); // predicted — not in CATALOG.md
+```

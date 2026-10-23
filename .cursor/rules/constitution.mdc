@@ -40,8 +40,14 @@ Non-negotiables for every task. Details and examples: [playwright-conventions](p
 
 ## Index
 
+**Rules** (`.cursor/rules/`):
+- [qa-orchestrator](qa-orchestrator.mdc) — ticket/CI delegation and routing
+- [api-conventions](api-conventions.mdc) — API tests in `api/`
+
 **Skills** (`.cursor/skills/`):
 - [api-cleanup](../skills/api-cleanup/SKILL.md) — API test teardown
+- [api-contract-tests](../skills/api-contract-tests/SKILL.md) — API specs from spec or catalog
+- [api-discovery](../skills/api-discovery/SKILL.md) — traffic → `api/CATALOG.md`
 - [ci-failure-triage](../skills/ci-failure-triage/SKILL.md) — red CI diagnosis
 - [eval-report](../skills/eval-report/SKILL.md) — suite reliability metrics
 - [exploratory-charter](../skills/exploratory-charter/SKILL.md) — exploratory session charter
@@ -53,9 +59,21 @@ Non-negotiables for every task. Details and examples: [playwright-conventions](p
 - [test-data-reset](../skills/test-data-reset/SKILL.md) — manual data reset
 
 **Agents** (`.cursor/agents/`):
+- [api-test-writer](../agents/api-test-writer.md) — catalog/spec → `api/` specs
 - [test-writer](../agents/test-writer.md) — plan to spec
 - [triage](../agents/triage.md) — classify CI failure
 - [bug-reporter](../agents/bug-reporter.md) — file Jira bug
+
+## Subagent gate
+
+| Subagent | Scope guard | Enforcement |
+|----------|-------------|-------------|
+| [test-writer](../agents/test-writer.md) | Write only under `tests/` and `pages/` | prompt only |
+| [api-test-writer](../agents/api-test-writer.md) | Write only under `api/` | prompt only |
+| [triage](../agents/triage.md) | Read-only diagnosis | prompt only (`readonly: true`) |
+| [bug-reporter](../agents/bug-reporter.md) | Jira only; no repo edits | prompt only (`readonly: true`) |
+
+Hooks (`.cursor/hooks/`) enforce weakened `expect(` in `tests/` and constitution violations in `tests/` / `pages/` — not subagent scope.
 
 ## Agent governance
 
